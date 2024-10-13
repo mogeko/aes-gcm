@@ -1,2 +1,3 @@
 # aes-gcm
-AES-GCM library for TypeScript/JavaScript
+
+AES-GCM library for TypeScript/JavaScript.
