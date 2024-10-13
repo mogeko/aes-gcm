@@ -1,0 +1,15 @@
+{
+  "name": "@mogeko/aes-gcm",
+  "version": "0.0.1",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/mod.ts"
+  },
+  "publish": {
+    "include": ["src/*", "LICENSE"]
+  },
+  "imports": {
+    "@/": "./src/",
+    "@std/crypto": "jsr:@std/crypto@^1.0.3"
+  }
+}
