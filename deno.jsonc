@@ -9,6 +9,7 @@
     "include": ["src/*", "LICENSE"]
   },
   "imports": {
+    "@/": "./src/",
     "@std/crypto": "jsr:@std/crypto@^1.0.3",
     "@std/encoding": "jsr:@std/encoding@^1.0.5"
   }
