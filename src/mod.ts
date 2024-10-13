@@ -1,7 +1,46 @@
+// Copyright (c) 2024 Zheng Junyi. All rights reserved. MIT license.
+
+/**
+ * A library that implements AES-GCM algorithm encryption and decryption
+ * for TypeScript/JavaScript.
+ *
+ * Galois/Counter Mode (GCM) uses a block cipher with block size 128 bits
+ * (commonly AES-128) operated in counter mode for encryption, and uses
+ * arithmetic in the Galois field GF(2128) to compute the authentication
+ * tag; hence the name.
+ *
+ * ## Usage
+ *
+ * ```ts
+ * import { decrypt, encrypt } from "jsr:@mogeko/aes-gcm";
+ * import { assertEquals } from "jsr:@std/assert/equals";
+ *
+ * const cipher = await encrypt("Hello, world!", "pa$$w0rd");
+ *
+ * assertEquals(await decrypt(cipher, "pa$$w0rd"), "Hello, world!");
+ * ```
+ *
+ * @module
+ */
+
 import { crypto } from "@std/crypto/crypto";
 import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
 import { decodeHex, encodeHex } from "@std/encoding/hex";
 
+/**
+ * Encrypt plain text to cipher text with AES-GCM algorithm.
+ *
+ * @param plain Plain text that needs to be encrypted.
+ * @param passwd The password used for encryption.
+ * @returns Cipher text encrypted with AES-GCM algorithm.
+ *
+ * @example Usage
+ * ```ts
+ * import { encrypt } from "jsr:@mogeko/aes-gcm";
+ *
+ * const cipher = await encrypt("Hello, world!", "pa$$w0rd");
+ * ```
+ */
 export async function encrypt(plain: string, passwd: string): Promise<string> {
   const pwUtf8 = new TextEncoder().encode(passwd);
   const pwHash = await crypto.subtle.digest("SHA-256", pwUtf8);
@@ -19,6 +58,23 @@ export async function encrypt(plain: string, passwd: string): Promise<string> {
   return encodeHex(iv) + encodeBase64(ctBuffer);
 }
 
+/**
+ * Decrypt the cipher text encrypted by AES-GCM algorithm to plain text.
+ *
+ * @param cipher Cipher text encrypted with AES-GCM algorithm.
+ * @param passwd The password used for decryption.
+ * @returns Plain text decrypted from cipher text.
+ *
+ * @example Usage
+ * ```ts
+ * import { decrypt } from "jsr:@mogeko/aes-gcm";
+ * import { assertEquals } from "jsr:@std/assert/equals";
+ *
+ * const cipher = "aca99b97756adc21cf62e71agw1jW7Zmthd9vylHTNYs3vzH2hFthaWmom0D8k4=";
+ *
+ * assertEquals(await decrypt(cipher, "pa$$w0rd"), "Hello, world!");
+ * ```
+ */
 export async function decrypt(cipher: string, passwd: string): Promise<string> {
   const pwUtf8 = new TextEncoder().encode(passwd);
   const pwHash = await crypto.subtle.digest("SHA-256", pwUtf8);
